@@ -1,5 +1,6 @@
 import paho.mqtt.client as mqtt
 from datetime import UTC, datetime
+from functools import wraps
 from typing import Callable, Dict, Optional
 
 from qube.events.exceptions import MessageHandlingError, SubscriptionError
@@ -11,19 +12,23 @@ class MQTTClient:
     and handling message events with user-defined handlers.
     """
 
-    BROKER_URL = "mqtt.dev.qube.q-better.com"
-    BROKER_PORT = 8883
+    DEFAULT_BROKER_URL = "mqtt.qube.q-better.com"
+    DEFAULT_BROKER_PORT = 443
 
-    def __init__(self, api_key: str):
+    def __init__(self, api_key: str, broker_url: str = None, broker_port: int = None):
         """
         Initializes and connects the MQTT client.
 
         Args:
             api_key (str): API key for client authentication.
-
+            broker_url (str, optional): URL of the MQTT broker. Defaults to DEFAULT_BROKER_URL.
+            broker_port (int, optional): Port of the MQTT broker. Defaults to DEFAULT_BROKER_PORT.
         Raises:
             ConnectionError: If unable to connect to the broker.
         """
+
+        self.broker_url = broker_url or self.DEFAULT_BROKER_URL
+        self.broker_port = broker_port or self.DEFAULT_BROKER_PORT
 
         self.client = mqtt.Client()
         self.message_handlers: Dict[str, Callable[[bytes], None]] = {}  # Maps topics to handler functions
@@ -47,10 +52,10 @@ class MQTTClient:
     def _connect_to_broker(self) -> None:
         """Connects to the MQTT broker and starts the network loop."""
         try:
-            self.client.connect(host=self.BROKER_URL, port=self.BROKER_PORT, keepalive=60)
+            self.client.connect(host=self.broker_url, port=self.broker_port, keepalive=60)
             self.client.loop_start()
         except Exception as e:
-            raise ConnectionError(f"Failed to connect to MQTT broker at {self.BROKER_URL}:{self.BROKER_PORT}: {e}")
+            raise ConnectionError(f"Failed to connect to MQTT broker at {self.broker_url}:{self.broker_port}: {e}")
 
     def disconnect(self) -> None:
         """Stops the MQTT network loop and disconnects from the broker."""

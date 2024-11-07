@@ -30,9 +30,18 @@ class TestMQTTClient(unittest.TestCase):
     def test_connect_to_broker(self):
         """Test that the client connects to the broker with correct URL and port"""
         self.mock_client.connect.assert_called_once_with(
-            host=MQTTClient.BROKER_URL, port=MQTTClient.BROKER_PORT, keepalive=60
+            host=MQTTClient.DEFAULT_BROKER_URL, port=MQTTClient.DEFAULT_BROKER_PORT, keepalive=60
         )
         self.mock_client.loop_start.assert_called_once()
+
+    def test_initialization_with_custom_broker_url_and_port(self):
+        """Test that the client initializes with custom broker URL and port"""
+        custom_broker_url = "custom.broker.url"
+        custom_broker_port = 1883
+        client = MQTTClient(api_key=self.api_key, broker_url=custom_broker_url, broker_port=custom_broker_port)
+
+        self.assertEqual(client.broker_url, custom_broker_url)
+        self.assertEqual(client.broker_port, custom_broker_port)
 
     def test_disconnect(self):
         """Test that disconnect stops the loop and disconnects from broker"""

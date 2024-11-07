@@ -8,9 +8,12 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.12"
+paho-mqtt = "^2.1.0"
 
 
 [tool.poetry.group.dev.dependencies]
+yapf = "^0.40.2"
+isort = "^5.13.2"
 pytest = "^8.3.3"
 
 [build-system]

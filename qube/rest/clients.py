@@ -1,6 +1,6 @@
 import requests
 
-from qube.rest.queue_management import QueueManagementManager
+from qube.rest.queue_management_manager import QueueManagementManager
 
 
 class RestClient:

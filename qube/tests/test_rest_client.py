@@ -37,7 +37,10 @@ class TestRestClient(unittest.TestCase):
         """Test that the client gets the custom queue management manager"""
         custom_queue_management_manager = Mock()
         qube_rest_client = RestClient(
-            self.base_url, self.api_key, self.location_id, queue_management_manager=custom_queue_management_manager
+            self.api_key,
+            self.location_id,
+            queue_management_manager=custom_queue_management_manager,
+            base_url=self.base_url
         )
         queue_management_manager_returned = qube_rest_client.get_queue_management_manager()
 
@@ -47,31 +50,40 @@ class TestRestClient(unittest.TestCase):
     def test_get_request(self, mock_requests_get):
         """Test the get request method"""
         path = "/path/to/request"
-        self.qube_rest_client.get_request(path)
+        params = {
+            "some_param": "some_value"
+        }
+        self.qube_rest_client.get_request(path, params)
         mock_requests_get.assert_called_once_with(
-            self.base_url + path, headers=self.qube_rest_client.headers, timeout=10
+            self.base_url + path, headers=self.qube_rest_client.headers, params=params, timeout=10
         )
 
     @patch.object(requests, "post")
     def test_post_request(self, mock_requests_get):
         """Test the post request method"""
         path = "/path/to/request"
+        params = {
+            "some_param": "some_value"
+        }
         data = {
             "some_key": "some_value"
         }
-        self.qube_rest_client.post_request(path, data)
+        self.qube_rest_client.post_request(path, params, data)
         mock_requests_get.assert_called_once_with(
-            self.base_url + path, headers=self.qube_rest_client.headers, data=data, timeout=10
+            self.base_url + path, headers=self.qube_rest_client.headers, params=params, data=data, timeout=10
         )
 
     @patch.object(requests, "put")
     def test_put_request(self, mock_requests_get):
         """Test the post request method"""
         path = "/path/to/request"
+        params = {
+            "some_param": "some_value"
+        }
         data = {
             "some_key": "some_value"
         }
-        self.qube_rest_client.put_request(path, data)
+        self.qube_rest_client.put_request(path, params, data)
         mock_requests_get.assert_called_once_with(
-            self.base_url + path, headers=self.qube_rest_client.headers, data=data, timeout=10
+            self.base_url + path, headers=self.qube_rest_client.headers, params=params, data=data, timeout=10
         )

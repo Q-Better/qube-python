@@ -9,6 +9,7 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.12"
 paho-mqtt = "^2.1.0"
+requests = "^2.32.3"
 
 
 [tool.poetry.group.dev.dependencies]

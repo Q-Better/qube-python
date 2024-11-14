@@ -4,7 +4,7 @@ import unittest
 from unittest.mock import Mock, patch
 
 from qube.rest.clients import RestClient
-from qube.rest.queue_management import QueueManagementManager
+from qube.rest.queue_management_manager import QueueManagementManager
 
 
 class TestRestClient(unittest.TestCase):

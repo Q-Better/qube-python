@@ -57,7 +57,7 @@ class TestQueueManagementManager(unittest.TestCase):
         mock_post_request.return_value.json.return_value = self.ticket_data
 
         ticket_generated = self.qube_rest_client.get_queue_management_manager().generate_ticket(queue_id, priority)
-        mock_post_request.assert_called_once_with(ticket_generate_path, generate_ticket_data)
+        mock_post_request.assert_called_once_with(ticket_generate_path, data=generate_ticket_data)
 
         self.assertEqual(ticket_generated, Ticket(**self.ticket_data))
 

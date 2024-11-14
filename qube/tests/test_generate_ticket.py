@@ -7,7 +7,7 @@ from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
 from qube.rest.types import Ticket
 
 
-class TestQueueManagementManager(unittest.TestCase):
+class TestGenerateTicket(unittest.TestCase):
 
     def setUp(self):
         self.base_url = "http://api-url-qube.com"
@@ -17,11 +17,11 @@ class TestQueueManagementManager(unittest.TestCase):
         self.qube_rest_client = RestClient(self.api_key, self.location_id, base_url=self.base_url)
 
         self.ticket_data = {
-            "id": 13920,
-            "signature": '88',
-            "number": 18,
-            "printed_number": '018',
-            "printed_tag": 'AS',
+            "id": 1,
+            "signature": '1',
+            "number": 1,
+            "printed_number": '001',
+            "printed_tag": 'A',
             "queue": 1,
             "queue_dest": 1,
             "counter_dest": None,

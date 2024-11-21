@@ -52,10 +52,10 @@ class TestCallNextTicket(unittest.TestCase):
                 'local_runner': None
             },
             'transferred_from_answering': None,
-            'created_at': '2024-11-13T08:09:09.981399Z',
-            'updated_at': '2024-11-13T08:09:09.981418Z',
+            'created_at': '2024-01-01T00:00:00.000000Z',
+            'updated_at': '2024-01-01T00:00:00.000000Z',
             'finish_reason': None,
-            'started_at': '2024-11-13T08:09:09.979191Z',
+            'started_at': '2024-01-01T00:00:00.000000Z',
             'finished_at': None,
             'invalidated_by_system': None,
             'waiting_time': 1,
@@ -150,7 +150,7 @@ class TestCallNextTicket(unittest.TestCase):
             self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
 
     @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_not_current_counter_exception(self, mock_post_request):
+    def test_call_next_ticket_for_no_current_counter_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (NoCurrentCounterException)"""
         profile_id = 1
 

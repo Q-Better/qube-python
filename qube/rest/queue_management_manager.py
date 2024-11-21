@@ -2,9 +2,12 @@ from requests import Response
 
 from qube.rest.exceptions import (
     AlreadyAnsweringException,
+    AnsweringAlreadyProcessedException,
     BadRequest,
     Forbidden,
+    HasLocalRunnerException,
     InactiveCounterException,
+    MismatchingCountersException,
     NoAccessToCounterException,
     NoCurrentCounterException,
     NotAuthorized,
@@ -17,7 +20,10 @@ SUB_TYPE_TO_EXCEPTION = {
     'already_answering': AlreadyAnsweringException,
     'no_associated_counter': NoCurrentCounterException,
     'inactive_counter': InactiveCounterException,
-    'counter_not_associated': NoAccessToCounterException
+    'counter_not_associated': NoAccessToCounterException,
+    'already_processed': AnsweringAlreadyProcessedException,
+    'mismatching_counters': MismatchingCountersException,
+    'has_local_runner': HasLocalRunnerException
 }
 
 STATUS_CODE_TO_EXCEPTION = {
@@ -91,7 +97,7 @@ class QueueManagementManager:
         """
         Call the next ticket.
         Args:
-            profile_id (int): Profile's id that is called the ticket.
+            profile_id (int): Profile's id that is call the ticket.
         Returns:
             Answering: The created Answering object.
         """
@@ -125,3 +131,19 @@ class QueueManagementManager:
         self._validate_response(response)
 
         return LocationAccessWithCurrentCounter(**response.json())
+
+    def end_answering(self, profile_id: int, answering_id: int) -> Answering:
+        """
+        Ends the given answering.
+        Args:
+            profile_id (int): Profile's id that is answering.
+            answering_id (int): Answering's id that will be ended.
+        Returns:
+            LocationAccessWithCurrentCounter: The updated LocationAccess object.
+        """
+        response = self.client.put_request(
+            f"/locations/{self.client.location_id}/queue-management/profiles/{profile_id}/answerings/{answering_id}/end/"
+        )
+        self._validate_response(response)
+
+        return Answering(**response.json())

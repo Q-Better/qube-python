@@ -75,7 +75,19 @@ class MismatchingCountersException(QueueManagementError):
         super().__init__(self.message)
 
 
-class HasLocalRunnerException(QueueManagementError):
+class InactiveQueueException(QueueManagementError):
+    """Raised when we are interacting with an inactive Queue."""
+
+    def __init__(self):
+        self.message = "Queue is inactive."
+        super().__init__(self.message)
+
+
+class LocalRunnerException(RestClientError):
+    """Base class for Local Runner errors."""
+
+
+class HasLocalRunnerException(LocalRunnerException):
     """Raised when we are interacting with an answering but there is a local runner associated."""
 
     def __init__(self):

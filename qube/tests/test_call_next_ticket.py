@@ -8,6 +8,7 @@ from qube.rest.exceptions import (
     BadRequest,
     Forbidden,
     InactiveCounterException,
+    InactiveQueueException,
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
@@ -185,4 +186,23 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(InactiveCounterException):
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+
+    @patch.object(RestClient, "post_request")
+    def test_call_next_ticket_for_inactive_queue_exception(self, mock_post_request):
+        """Test call next ticket to raises an Exception (InactiveQueueException)"""
+        profile_id = 1
+
+        response = mock.Mock()
+        response.status_code = 400
+        response.json.return_value = {
+            "status": 400,
+            "type": "queue_management_error",
+            "sub_type": "inactive_queue",
+            "title": "Queue is inactive.",
+            "detail": "Queue is inactive."
+        }
+        mock_post_request.return_value = response
+
+        with self.assertRaises(InactiveQueueException):
             self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)

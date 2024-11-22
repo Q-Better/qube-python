@@ -7,13 +7,19 @@ from qube.rest.exceptions import (
     Forbidden,
     HasLocalRunnerException,
     InactiveCounterException,
+    InactiveQueueException,
     MismatchingCountersException,
     NoAccessToCounterException,
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
 )
-from qube.rest.types import Answering, LocationAccessWithCurrentCounter, Ticket
+from qube.rest.types import (
+    Answering,
+    LocationAccessWithCurrentCounter,
+    Queue,
+    Ticket,
+)
 
 
 SUB_TYPE_TO_EXCEPTION = {
@@ -23,7 +29,8 @@ SUB_TYPE_TO_EXCEPTION = {
     'counter_not_associated': NoAccessToCounterException,
     'already_processed': AnsweringAlreadyProcessedException,
     'mismatching_counters': MismatchingCountersException,
-    'has_local_runner': HasLocalRunnerException
+    'has_local_runner': HasLocalRunnerException,
+    'inactive_queue': InactiveQueueException
 }
 
 STATUS_CODE_TO_EXCEPTION = {
@@ -162,3 +169,20 @@ class QueueManagementManager:
         self._validate_response(response)
 
         return Answering(**response.json())
+
+    def set_queue_status(self, queue_id: int, is_active: bool) -> Queue:
+        """
+        Sets the status of given queue.
+        Args:
+            queue_id (int): Queue's id that will have status changed.
+            is_active (bool): Value to set in Queue.
+        Returns:
+            Queue: The updated Queue object.
+        """
+        data = {
+            "is_active": is_active
+        }
+        response = self.client.put_request(f"/locations/{self.client.location_id}/queues/{queue_id}/status/", data=data)
+        self._validate_response(response)
+
+        return Queue(**response.json())

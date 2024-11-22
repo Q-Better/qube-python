@@ -3,7 +3,7 @@ from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, Mock, patch
 
 from qube.events.clients import MQTTClient
-from qube.events.exceptions import MessageHandlingError, SubscriptionError
+from qube.events.exceptions import SubscriptionError
 
 
 class TestMQTTClient(unittest.TestCase):
@@ -18,7 +18,7 @@ class TestMQTTClient(unittest.TestCase):
         # Mock subscribe method to be tracked
         self.mock_client.subscribe = MagicMock()
         # Instantiate MQTTClient with mocked MQTT broker connection
-        self.client = MQTTClient(api_key=self.api_key)
+        self.client = MQTTClient(api_key=self.api_key, location_id=1)
 
     def test_initialization_with_correct_credentials(self):
         """Test that the client initializes with correct credentials"""
@@ -38,7 +38,9 @@ class TestMQTTClient(unittest.TestCase):
         """Test that the client initializes with custom broker URL and port"""
         custom_broker_url = "custom.broker.url"
         custom_broker_port = 1883
-        client = MQTTClient(api_key=self.api_key, broker_url=custom_broker_url, broker_port=custom_broker_port)
+        client = MQTTClient(
+            api_key=self.api_key, broker_url=custom_broker_url, broker_port=custom_broker_port, location_id=1
+        )
 
         self.assertEqual(client.broker_url, custom_broker_url)
         self.assertEqual(client.broker_port, custom_broker_port)
@@ -49,72 +51,46 @@ class TestMQTTClient(unittest.TestCase):
         self.mock_client.loop_stop.assert_called_once()
         self.mock_client.disconnect.assert_called_once()
 
-    def test_add_handler_registers_handler(self):
-        """Test that add_handler registers a handler function for a topic"""
-
-        def sample_handler(payload):
-            pass
-
+    def test_subscribe_to_topic_registers_handler_and_subscribes(self):
+        """Test that subscribe_to_topic registers a handler and subscribes to the topic"""
         topic = 'test/topic'
-        self.client.add_handler(topic, sample_handler)
+        handler = Mock()
+        self.client.subscribe_to_topic(topic, handler)
         self.assertIn(topic, self.client.message_handlers)
-        self.assertEqual(self.client.message_handlers[topic], sample_handler)
-
-    def test_add_handler_subscribes_immediately_if_connected(self):
-        """Test that add_handler subscribes immediately if client is connected"""
-        topic = 'test/topic'
-
-        # Add handler and expect subscribe to be called
-        self.client.add_handler(topic, lambda payload: None)
-
-        # Assert that subscribe was called immediately with the correct topic
+        self.assertIn(handler, self.client.message_handlers[topic])
         self.mock_client.subscribe.assert_called_once_with(topic)
 
-    def test_add_handler_subscription_error(self):
-        """Test that SubscriptionError is raised if subscribing fails"""
+    def test_subscribe_to_topic_raises_subscription_error_on_failure(self):
+        """Test that SubscriptionError is raised if subscribing to a topic fails"""
         self.mock_client.subscribe.side_effect = Exception("Subscribe failed")
         with self.assertRaises(SubscriptionError):
-            self.client.add_handler("test/topic", lambda payload: None)
+            self.client.subscribe_to_topic("test/topic", lambda payload: None)
 
-    def test_on_connect_connection_error(self):
-        """Test that ConnectionError is raised if connection is unsuccessful"""
-        with self.assertRaises(ConnectionError):
-            self.client._on_connect(self.mock_client, None, None, 1)
-
-    def test_on_connect_subscription_error(self):
-        """Test that SubscriptionError is raised if subscribing fails on connect"""
+    def test_unsubscribe_from_topic_removes_handler_and_unsubscribes(self):
+        """Test that unsubscribe_from_topic removes the handler and unsubscribes from the topic"""
         topic = 'test/topic'
-        self.client.add_handler(topic, lambda payload: None)
-        self.mock_client.subscribe.side_effect = Exception("Subscribe failed")
-        with self.assertRaises(SubscriptionError):
-            self.client._on_connect(self.mock_client, None, None, 0)
-
-    def test_on_message_dispatches_to_correct_handler(self):
-        """Test that on_message dispatches the message to the correct handler"""
-        topic = 'test/topic'
-        payload_data = b"test message"
         handler = Mock()
-        self.client.add_handler(topic, handler)
+        self.client.subscribe_to_topic(topic, handler)
+        self.client.unsubscribe_from_topic(topic)
+        self.assertNotIn(topic, self.client.message_handlers)
+        self.assertNotIn(topic, self.client._subscribed_topics)
+        self.mock_client.unsubscribe.assert_called_once_with(topic)
 
-        msg = Mock()
-        msg.topic = topic
-        msg.payload = payload_data
-
-        self.client._on_message(self.mock_client, None, msg)
-        handler.assert_called_once_with(payload_data)
-
-    def test_on_message_message_handling_error(self):
-        """Test that MessageHandlingError is raised if a handler fails"""
+    def test_unsubscribe_from_topic_raises_subscription_error_on_failure(self):
+        """Test that SubscriptionError is raised if unsubscribing from a topic fails"""
         topic = 'test/topic'
-        handler = Mock(side_effect=Exception("Handler error"))
-        self.client.add_handler(topic, handler)
+        handler = Mock()
+        self.client.subscribe_to_topic(topic, handler)
+        self.mock_client.unsubscribe.side_effect = Exception("Unsubscribe failed")
+        with self.assertRaises(SubscriptionError):
+            self.client.unsubscribe_from_topic(topic)
 
-        msg = Mock()
-        msg.topic = topic
-        msg.payload = b"message"
-
-        with self.assertRaises(MessageHandlingError):
-            self.client._on_message(self.mock_client, None, msg)
+    def test_list_subscribed_topics_returns_correct_list(self):
+        """Test that list_subscribed_topics returns the correct list of subscribed topics"""
+        topics = ['test/topic1', 'test/topic2']
+        for topic in topics:
+            self.client.subscribe_to_topic(topic, lambda payload: None)
+        self.assertEqual(set(self.client.list_subscribed_topics()), set(topics))
 
     def test_age_calculation(self):
         """Test that age returns the correct number of days"""

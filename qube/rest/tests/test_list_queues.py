@@ -4,6 +4,7 @@ from unittest.mock import call, patch
 
 from qube.rest.clients import RestClient
 from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
+from qube.rest.types import Queue
 
 
 class TestListQueues(unittest.TestCase):
@@ -161,7 +162,8 @@ class TestListQueues(unittest.TestCase):
 
         list_of_queues_generator = list(list_of_queues_generator)
         for page_with_queues in list_of_queues_generator:
-            self.assertEqual(page_with_queues, self.queues_by_pages[0])
+            queues_list = [Queue(**item) for item in self.queues_by_pages[0]]
+            self.assertEqual(page_with_queues, queues_list)
 
         mock_get_request.assert_called_once_with(list_queues_path, params={
             'page': 1
@@ -181,7 +183,8 @@ class TestListQueues(unittest.TestCase):
         page = 1
 
         for page_with_queues in list_of_queues_generator:
-            self.assertEqual(page_with_queues, self.queues_by_pages[page - 1])
+            queues_list = [Queue(**item) for item in self.queues_by_pages[page - 1]]
+            self.assertEqual(page_with_queues, queues_list)
             page += 1
 
         mock_get_request.assert_has_calls([

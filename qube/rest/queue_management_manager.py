@@ -208,7 +208,7 @@ class QueueManagementManager:
             self._validate_response(response)
 
             response_data = response.json()
-            yield response_data["results"]
+            yield [Queue(**item) for item in response_data["results"]]
 
             if response_data.get("next"):
                 page += 1

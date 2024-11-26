@@ -16,7 +16,7 @@ from qube.rest.types import Queue
 class TestSetQueueStatus(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://api-url-qube.com"
+        self.base_url = "https://api-url-qube.com"
         self.api_key = 'api_key'
         self.location_id = 1
         self.location_access_id = 1
@@ -49,7 +49,7 @@ class TestSetQueueStatus(unittest.TestCase):
 
     @patch.object(RestClient, "put_request")
     def test_set_queue_status_with_success(self, mock_put_request):
-        """Test set queue status and checks if LocationAccess with current Counter object is returned"""
+        """Test set queue status and checks if Queue object is returned"""
         queue_id = 1
         set_queue_status_path = f"/locations/{self.location_id}/queues/{queue_id}/status/"
 

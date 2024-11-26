@@ -1,5 +1,7 @@
 from requests import Response
 
+from typing import Generator, List
+
 from qube.rest.exceptions import (
     AlreadyAnsweringException,
     AnsweringAlreadyProcessedException,
@@ -186,3 +188,29 @@ class QueueManagementManager:
         self._validate_response(response)
 
         return Queue(**response.json())
+
+    def list_queues(self) -> Generator[List[Queue], None, None]:
+        """
+        Lazily fetches queues from the API.
+        List queues using `yield` for efficient processing of paginated API responses.
+        This method retrieves and yields items one at a time, reducing memory usage and
+        improving performance for large datasets.
+        Returns:
+            Generator[List[Queue]]: Generator that will iterate over pages of Queues.
+        """
+        has_next_page = True
+        page = 1
+        while has_next_page:
+            params = {
+                "page": page,
+            }
+            response = self.client.get_request(f"/locations/{self.client.location_id}/queues/", params=params)
+            self._validate_response(response)
+
+            response_data = response.json()
+            yield response_data["results"]
+
+            if response_data.get("next"):
+                page += 1
+            else:
+                has_next_page = False

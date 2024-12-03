@@ -85,7 +85,7 @@ class QueueManagementManager:
 
         return Ticket(**response.json())
 
-    def call_next_ticket(self, profile_id: int) -> Answering:
+    def call_next_ticket_ending_current(self, profile_id: int) -> Answering:
         """
         Call the next ticket.
         Args:

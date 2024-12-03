@@ -10,7 +10,7 @@ from qube.rest.types import Answering
 class TestGetCurrentAnswering(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://api-url-qube.com"
+        self.base_url = "https://api-url-qube.com"
         self.api_key = 'api_key'
         self.location_id = 1
 

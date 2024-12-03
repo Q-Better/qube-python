@@ -9,6 +9,7 @@ from qube.rest.exceptions import (
     Forbidden,
     HasLocalRunnerException,
     InactiveCounterException,
+    InactiveQueueException,
     MismatchingCountersException,
     NoCurrentCounterException,
     NotAuthorized,
@@ -20,7 +21,7 @@ from qube.rest.types import Answering
 class TestEndAnswering(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "http://api-url-qube.com"
+        self.base_url = "https://api-url-qube.com"
         self.api_key = 'api_key'
         self.location_id = 1
 
@@ -213,6 +214,26 @@ class TestEndAnswering(unittest.TestCase):
         mock_put_request.return_value = response
 
         with self.assertRaises(MismatchingCountersException):
+            self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
+
+    @patch.object(RestClient, "put_request")
+    def test_end_answering_for_mismatching_counters_exception(self, mock_put_request):
+        """Test end answering to raises an Exception (InactiveQueueException)"""
+        profile_id = 1
+        answering_id = 1
+
+        response = mock.Mock()
+        response.status_code = 400
+        response.json.return_value = {
+            "status": 400,
+            "type": "queue_management_error",
+            "sub_type": "inactive_queue",
+            "title": "Queue is inactive.",
+            "detail": "Queue is inactive."
+        }
+        mock_put_request.return_value = response
+
+        with self.assertRaises(InactiveQueueException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
     @patch.object(RestClient, "put_request")

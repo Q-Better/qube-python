@@ -119,3 +119,28 @@ class LocationAccessWithCurrentCounter:
     created_at: datetime
     updated_at: Optional[datetime]
     deleted_at: Optional[datetime]
+
+
+@dataclass
+class Queue:
+    """
+    Class with all attributes of Qube's Queue
+    """
+    id: int
+    is_active: bool
+    created_at: datetime
+    updated_at: Optional[datetime]
+    deleted_at: Optional[datetime]
+    tag: str
+    name: str
+    allow_priority: bool
+    ticket_range_enabled: bool
+    min_ticket_number: int
+    max_ticket_number: int
+    ticket_tolerance_enabled: bool
+    ticket_tolerance_number: int
+    kpi_wait_count: int
+    kpi_wait_time: int
+    kpi_service_time: int
+    location: int
+    schedule: int

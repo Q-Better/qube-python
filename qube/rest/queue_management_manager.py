@@ -5,17 +5,19 @@ from qube.rest.exceptions import (
     BadRequest,
     Forbidden,
     InactiveCounterException,
+    NoAccessToCounterException,
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
 )
-from qube.rest.types import Answering, Ticket
+from qube.rest.types import Answering, LocationAccessWithCurrentCounter, Ticket
 
 
 SUB_TYPE_TO_EXCEPTION = {
     'already_answering': AlreadyAnsweringException,
     'no_associated_counter': NoCurrentCounterException,
-    'inactive_counter': InactiveCounterException
+    'inactive_counter': InactiveCounterException,
+    'counter_not_associated': NoAccessToCounterException
 }
 
 STATUS_CODE_TO_EXCEPTION = {
@@ -71,7 +73,7 @@ class QueueManagementManager:
             queue (int): Path of URL to be added to base url to make the request.
             priority (bool): Query parameters that will be included in the URL.
         Returns:
-            Ticket: The generated ticket object.
+            Ticket: The generated Ticket object.
         """
         data = {
             "queue": queue,
@@ -91,7 +93,7 @@ class QueueManagementManager:
         Args:
             profile_id (int): Profile's id that is called the ticket.
         Returns:
-            Answering: The created answering object.
+            Answering: The created Answering object.
         """
         params = {
             "end_current": True
@@ -103,3 +105,23 @@ class QueueManagementManager:
         self._validate_response(response)
 
         return Answering(**response.json())
+
+    def set_current_counter(self, location_access_id: int, counter_id: int) -> LocationAccessWithCurrentCounter:
+        """
+        Set the current Counter on a given LocationAccess.
+        Args:
+            location_access_id (int): LocationAccess' id that will have stored the current counter information.
+            counter_id (int): Counter's id that will be setted.
+        Returns:
+            LocationAccessWithCurrentCounter: The updated LocationAccess object.
+        """
+        data = {
+            "counter": counter_id
+        }
+        response = self.client.put_request(
+            f"/locations/{self.client.location_id}/location-accesses/{location_access_id}/associate-counter/",
+            data=data
+        )
+        self._validate_response(response)
+
+        return LocationAccessWithCurrentCounter(**response.json())

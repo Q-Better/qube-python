@@ -3,7 +3,7 @@ from datetime import datetime
 from typing import List, Optional, Union
 
 
-class StateEnum:
+class TicketStateEnum:
     WAITING = 1
     IN_SERVICE = 2
     PAUSED = 3
@@ -24,6 +24,18 @@ class InvalidatedBySystemEnum:
     INVALIDATE_RESET = 1
 
 
+class AuthGroupEnum:
+    ADMIN = 1
+    SERVICE_MANAGER = 2
+    STAFF_MEMBER = 3
+    DEVICE = 4
+
+
+class LocationAccessStatusEnum:
+    STATUS_PENDING = 1
+    STATUS_ACCEPTED = 2
+
+
 @dataclass
 class Ticket:
     """
@@ -39,7 +51,7 @@ class Ticket:
     priority: bool
     priority_level: int
     created_at: datetime
-    state: StateEnum
+    state: TicketStateEnum
     invalidated_by_system: Optional[InvalidatedBySystemEnum]
     ticket_local_runner: Optional[int]
     queue: int
@@ -69,9 +81,41 @@ class Answering:
     waiting_time: Optional[int]
     service_time: Optional[int]
     answering_local_runner: Optional[int]
-    ticket: int
+    ticket: Ticket
     profile: int
     counter: int
     queue: int
     local_runner: Optional[int]
     transferred_from_answering: Optional[int]
+
+
+@dataclass
+class Counter:
+    """
+    Class with some attributes of Qube's Counter. This class is used as nested object in other classes.
+    """
+    id: int
+    is_active: bool
+    created_at: datetime
+    updated_at: Optional[datetime]
+    deleted_at: Optional[datetime]
+    tag: str
+    name: str
+    location: int
+
+
+@dataclass
+class LocationAccessWithCurrentCounter:
+    """
+    Class with all attributes of Qube's LocationAccess with an extra field (current_counter)
+    """
+    id: int
+    location: int
+    profile: int
+    current_counter: Counter
+    groups: List[AuthGroupEnum]
+    invitation_email: str
+    status: LocationAccessStatusEnum
+    created_at: datetime
+    updated_at: Optional[datetime]
+    deleted_at: Optional[datetime]

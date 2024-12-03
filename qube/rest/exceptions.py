@@ -49,3 +49,11 @@ class InactiveCounterException(QueueManagementError):
     def __init__(self):
         self.message = "The Counter that you are in is inactive."
         super().__init__(self.message)
+
+
+class NoAccessToCounterException(QueueManagementError):
+    """Raised when a client has no access to Counter."""
+
+    def __init__(self):
+        self.message = "This Profile is not associated to this Counter."
+        super().__init__(self.message)

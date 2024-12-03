@@ -52,10 +52,10 @@ class TestCallNextTicketEndingCurrent(unittest.TestCase):
                 'local_runner': None
             },
             'transferred_from_answering': None,
-            'created_at': '2024-11-13T08:09:09.981399Z',
-            'updated_at': '2024-11-13T08:09:09.981418Z',
+            'created_at': '2024-01-01T00:00:00.000000Z',
+            'updated_at': '2024-01-01T00:00:00.000000Z',
             'finish_reason': None,
-            'started_at': '2024-11-13T08:09:09.979191Z',
+            'started_at': '2024-01-01T00:00:00.000000Z',
             'finished_at': None,
             'invalidated_by_system': None,
             'waiting_time': 1,

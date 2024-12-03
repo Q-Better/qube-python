@@ -57,3 +57,27 @@ class NoAccessToCounterException(QueueManagementError):
     def __init__(self):
         self.message = "This Profile is not associated to this Counter."
         super().__init__(self.message)
+
+
+class AnsweringAlreadyProcessedException(QueueManagementError):
+    """Raised when we are interacting with an answering that is already processed."""
+
+    def __init__(self):
+        self.message = "Answering is already processed and finished."
+        super().__init__(self.message)
+
+
+class MismatchingCountersException(QueueManagementError):
+    """Raised when we are interacting with an answering that has a different counter from current counter."""
+
+    def __init__(self):
+        self.message = "The Counter of Answering is not the current_counter of Profile."
+        super().__init__(self.message)
+
+
+class HasLocalRunnerException(QueueManagementError):
+    """Raised when we are interacting with an answering but there is a local runner associated."""
+
+    def __init__(self):
+        self.message = "This Location has Local Runner set: Queue Management action should be done through it."
+        super().__init__(self.message)

@@ -7,6 +7,7 @@ from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
 from qube.rest.types import Ticket
 
 
+@patch.object(RestClient, "post_request")
 class TestGenerateTicket(unittest.TestCase):
 
     def setUp(self):
@@ -42,7 +43,6 @@ class TestGenerateTicket(unittest.TestCase):
             "local_runner": None
         }
 
-    @patch.object(RestClient, "post_request")
     def test_generate_ticket_with_success(self, mock_post_request):
         """Test generate ticket and checks if Ticket object is returned"""
 
@@ -61,7 +61,6 @@ class TestGenerateTicket(unittest.TestCase):
 
         self.assertEqual(ticket_generated, Ticket(**self.ticket_data))
 
-    @patch.object(RestClient, "post_request")
     def test_generate_ticket_for_bad_request(self, mock_post_request):
         """Test generate ticket to raises an Exception (BadRequest)"""
         queue_id = 1
@@ -74,7 +73,6 @@ class TestGenerateTicket(unittest.TestCase):
         with self.assertRaises(BadRequest):
             self.qube_rest_client.get_queue_management_manager().generate_ticket(queue_id, priority)
 
-    @patch.object(RestClient, "post_request")
     def test_generate_ticket_for_not_authorized(self, mock_post_request):
         """Test generate ticket to raises an Exception (NotAuthorized)"""
         queue_id = 1
@@ -87,7 +85,6 @@ class TestGenerateTicket(unittest.TestCase):
         with self.assertRaises(NotAuthorized):
             self.qube_rest_client.get_queue_management_manager().generate_ticket(queue_id, priority)
 
-    @patch.object(RestClient, "post_request")
     def test_generate_ticket_for_forbidden(self, mock_post_request):
         """Test generate ticket to raises an Exception (Forbidden)"""
         queue_id = 1
@@ -100,7 +97,6 @@ class TestGenerateTicket(unittest.TestCase):
         with self.assertRaises(Forbidden):
             self.qube_rest_client.get_queue_management_manager().generate_ticket(queue_id, priority)
 
-    @patch.object(RestClient, "post_request")
     def test_generate_ticket_for_not_found(self, mock_post_request):
         """Test generate ticket to raises an Exception (NotFound)"""
         queue_id = 1

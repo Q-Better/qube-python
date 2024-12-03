@@ -13,6 +13,7 @@ from qube.rest.exceptions import (
 from qube.rest.types import Queue
 
 
+@patch.object(RestClient, "put_request")
 class TestSetQueueStatus(unittest.TestCase):
 
     def setUp(self):
@@ -47,7 +48,6 @@ class TestSetQueueStatus(unittest.TestCase):
             'schedule': None
         }
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_with_success(self, mock_put_request):
         """Test set queue status and checks if Queue object is returned"""
         queue_id = 1
@@ -64,7 +64,6 @@ class TestSetQueueStatus(unittest.TestCase):
 
         self.assertEqual(location_access_updated, Queue(**self.queue_data))
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_for_bad_request(self, mock_put_request):
         """Test set queue status to raises an Exception (BadRequest)"""
         response = mock.Mock()
@@ -74,7 +73,6 @@ class TestSetQueueStatus(unittest.TestCase):
         with self.assertRaises(BadRequest):
             self.qube_rest_client.get_queue_management_manager().set_queue_status(self.queue_id, self.is_active)
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_for_not_authorized(self, mock_put_request):
         """Test set queue status to raises an Exception (NotAuthorized)"""
         response = mock.Mock()
@@ -84,7 +82,6 @@ class TestSetQueueStatus(unittest.TestCase):
         with self.assertRaises(NotAuthorized):
             self.qube_rest_client.get_queue_management_manager().set_queue_status(self.queue_id, self.is_active)
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_for_forbidden(self, mock_put_request):
         """Test set queue status to raises an Exception (Forbidden)"""
         response = mock.Mock()
@@ -94,7 +91,6 @@ class TestSetQueueStatus(unittest.TestCase):
         with self.assertRaises(Forbidden):
             self.qube_rest_client.get_queue_management_manager().set_queue_status(self.queue_id, self.is_active)
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_for_not_found(self, mock_put_request):
         """Test set queue status to raises an Exception (NotFound)"""
         response = mock.Mock()
@@ -106,7 +102,6 @@ class TestSetQueueStatus(unittest.TestCase):
                 self.location_access_id, self.counter_id
             )
 
-    @patch.object(RestClient, "put_request")
     def test_set_queue_status_for_no_access_to_counter_exception(self, mock_put_request):
         """Test set queue status to raises an Exception (NoAccessToCounterException)"""
         response = mock.Mock()

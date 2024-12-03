@@ -16,6 +16,7 @@ from qube.rest.exceptions import (
 from qube.rest.types import Answering
 
 
+@patch.object(RestClient, "post_request")
 class TestCallNextTicket(unittest.TestCase):
 
     def setUp(self):
@@ -68,23 +69,22 @@ class TestCallNextTicket(unittest.TestCase):
             'local_runner': None
         }
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_with_success(self, mock_post_request):
+    def test_call_next_ticket_ending_current_with_success(self, mock_post_request):
         """Test call next ticket and checks if Answering object is returned"""
         profile_id = 1
         ticket_call_next_path = f"/locations/{self.location_id}/queue-management/profiles/{profile_id}/tickets/call-next/"
 
         mock_post_request.return_value.json.return_value = self.answering_data
 
-        answering_created = self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+        answering_created = self.qube_rest_client.get_queue_management_manager(
+        ).call_next_ticket_ending_current(profile_id)
         mock_post_request.assert_called_once_with(ticket_call_next_path, params={
             'end_current': True
         })
 
         self.assertEqual(answering_created, Answering(**self.answering_data))
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_bad_request(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_bad_request(self, mock_post_request):
         """Test call next ticket to raises an Exception (BadRequest)"""
         profile_id = 1
 
@@ -93,10 +93,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(BadRequest):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_not_authorized(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_not_authorized(self, mock_post_request):
         """Test call next ticket to raises an Exception (NotAuthorized)"""
         profile_id = 1
 
@@ -105,10 +104,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(NotAuthorized):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_forbidden(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_forbidden(self, mock_post_request):
         """Test call next ticket to raises an Exception (Forbidden)"""
         profile_id = 1
 
@@ -117,10 +115,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(Forbidden):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_not_found(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_not_found(self, mock_post_request):
         """Test call next ticket to raises an Exception (NotFound)"""
         profile_id = 1
 
@@ -129,10 +126,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(NotFound):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_already_answering_exception(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_already_answering_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (AlreadyAnsweringException)"""
         profile_id = 1
 
@@ -148,10 +144,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(AlreadyAnsweringException):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_no_current_counter_exception(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_no_current_counter_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (NoCurrentCounterException)"""
         profile_id = 1
 
@@ -167,10 +162,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(NoCurrentCounterException):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_inactive_counter_exception(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_inactive_counter_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (InactiveCounterException)"""
         profile_id = 1
 
@@ -186,10 +180,9 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(InactiveCounterException):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    @patch.object(RestClient, "post_request")
-    def test_call_next_ticket_for_inactive_queue_exception(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_inactive_queue_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (InactiveQueueException)"""
         profile_id = 1
 
@@ -205,4 +198,4 @@ class TestCallNextTicket(unittest.TestCase):
         mock_post_request.return_value = response
 
         with self.assertRaises(InactiveQueueException):
-            self.qube_rest_client.get_queue_management_manager().call_next_ticket(profile_id)
+            self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)

@@ -23,6 +23,11 @@ class NotFound(RestClientError):
     pass
 
 
+class InternalServerError(RestClientError):
+    """Raised when a client makes a request and something is wrong with API Server."""
+    pass
+
+
 class QueueManagementError(RestClientError):
     """Base class for Queue Management errors."""
 
@@ -80,6 +85,14 @@ class InactiveQueueException(QueueManagementError):
 
     def __init__(self):
         self.message = "Queue is inactive."
+        super().__init__(self.message)
+
+
+class InvalidScheduleException(QueueManagementError):
+    """Raised when we are generating a Ticket outside of the scheduled operating time."""
+
+    def __init__(self):
+        self.message = "You are currently outside the scheduled operating time. Please contact your admin."
         super().__init__(self.message)
 
 

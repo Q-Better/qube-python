@@ -1,6 +1,7 @@
 from requests import Response
 
-from typing import Generator, List
+import base64
+from typing import Generator, List, Optional
 
 from qube.rest.exceptions import (
     AlreadyAnsweringException,
@@ -10,12 +11,15 @@ from qube.rest.exceptions import (
     HasLocalRunnerException,
     InactiveCounterException,
     InactiveQueueException,
+    InternalServerError,
+    InvalidScheduleException,
     MismatchingCountersException,
     NoAccessToCounterException,
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
 )
+from qube.rest.graphql_generators import QueuesListGraphQLGenerator
 from qube.rest.types import (
     Answering,
     LocationAccessWithCurrentCounter,
@@ -32,14 +36,16 @@ SUB_TYPE_TO_EXCEPTION = {
     'already_processed': AnsweringAlreadyProcessedException,
     'mismatching_counters': MismatchingCountersException,
     'has_local_runner': HasLocalRunnerException,
-    'inactive_queue': InactiveQueueException
+    'inactive_queue': InactiveQueueException,
+    'invalid_schedule': InvalidScheduleException
 }
 
 STATUS_CODE_TO_EXCEPTION = {
     400: BadRequest,
     401: NotAuthorized,
     403: Forbidden,
-    404: NotFound
+    404: NotFound,
+    500: InternalServerError,
 }
 
 
@@ -106,7 +112,7 @@ class QueueManagementManager:
         """
         Call the next ticket.
         Args:
-            profile_id (int): Profile's id that is call the ticket.
+            profile_id (int): Profile's id that calls the ticket.
         Returns:
             Answering: The created Answering object.
         """
@@ -157,7 +163,7 @@ class QueueManagementManager:
 
         return Answering(**response.json())
 
-    def get_current_answering(self, profile_id: int) -> Answering:
+    def get_current_answering(self, profile_id: int) -> Optional[Answering]:
         """
         Gets the current answering of given profile.
         Args:
@@ -170,7 +176,10 @@ class QueueManagementManager:
         )
         self._validate_response(response)
 
-        return Answering(**response.json())
+        if response.content.strip():
+            return Answering(**response.json())
+        else:
+            return None
 
     def set_queue_status(self, queue_id: int, is_active: bool) -> Queue:
         """
@@ -214,3 +223,40 @@ class QueueManagementManager:
                 page += 1
             else:
                 has_next_page = False
+
+    def list_queues_of_queues_list(self, queues_list_id: int) -> List[Queue]:
+        """
+        Gets one list of queues that are associated with given QueuesList
+        Args:
+            queues_list_id (int): QueuesList's id that have queues associated.
+        Returns:
+            List[Queue]: List of Queues associated with given QueuesList.
+        """
+        has_next_page = True
+        after = "\"\""
+
+        while has_next_page:
+            list_of_queues_objects = list()
+
+            query = QueuesListGraphQLGenerator.generate_query_body(queues_list=queues_list_id, first=10, after=after)
+
+            response = self.client.make_graphql_request(query)
+            self._validate_response(response)
+
+            response_data = response.json()
+
+            list_of_queues = [edge["node"]["queue"] for edge in response_data["data"]["queues_lists_queues"]["edges"]]
+
+            for queue in list_of_queues:
+                queue["id"] = int(base64.b64decode(queue["id"]).decode('utf-8').split(":")[1])
+                queue["location"] = int(base64.b64decode(queue["location"]["id"]).decode('utf-8').split(":")[1])
+                if queue.get("schedule"):
+                    queue["schedule"] = int(base64.b64decode(queue["schedule"]["id"]).decode('utf-8').split(":")[1])
+                list_of_queues_objects.append(Queue(**queue))
+
+            if response_data['data']['queues_lists_queues']['pageInfo']['hasNextPage']:
+                after = f"\"{response_data['data']['queues_lists_queues']['pageInfo']['endCursor']}\""
+            else:
+                has_next_page = False
+
+            yield list_of_queues_objects

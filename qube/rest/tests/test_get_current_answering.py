@@ -7,6 +7,7 @@ from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
 from qube.rest.types import Answering
 
 
+@patch.object(RestClient, "get_request")
 class TestGetCurrentAnswering(unittest.TestCase):
 
     def setUp(self):
@@ -59,7 +60,6 @@ class TestGetCurrentAnswering(unittest.TestCase):
             'local_runner': None
         }
 
-    @patch.object(RestClient, "get_request")
     def test_get_current_answering_with_success(self, mock_get_request):
         """Test get current answering and checks if Answering object is returned"""
         profile_id = 1
@@ -72,7 +72,6 @@ class TestGetCurrentAnswering(unittest.TestCase):
 
         self.assertEqual(answering_ended, Answering(**self.answering_data))
 
-    @patch.object(RestClient, "get_request")
     def test_get_current_answering_for_bad_request(self, mock_get_request):
         """Test get current answering to raises an Exception (BadRequest)"""
         profile_id = 1
@@ -84,7 +83,6 @@ class TestGetCurrentAnswering(unittest.TestCase):
         with self.assertRaises(BadRequest):
             self.qube_rest_client.get_queue_management_manager().get_current_answering(profile_id)
 
-    @patch.object(RestClient, "get_request")
     def test_get_current_answering_for_not_authorized(self, mock_get_request):
         """Test get current answering to raises an Exception (NotAuthorized)"""
         profile_id = 1
@@ -96,7 +94,6 @@ class TestGetCurrentAnswering(unittest.TestCase):
         with self.assertRaises(NotAuthorized):
             self.qube_rest_client.get_queue_management_manager().get_current_answering(profile_id)
 
-    @patch.object(RestClient, "get_request")
     def test_get_current_answering_for_forbidden(self, mock_get_request):
         """Test get current answering to raises an Exception (Forbidden)"""
         profile_id = 1
@@ -108,7 +105,6 @@ class TestGetCurrentAnswering(unittest.TestCase):
         with self.assertRaises(Forbidden):
             self.qube_rest_client.get_queue_management_manager().get_current_answering(profile_id)
 
-    @patch.object(RestClient, "get_request")
     def test_get_current_answering_for_not_found(self, mock_get_request):
         """Test get current answering to raises an Exception (NotFound)"""
         profile_id = 1

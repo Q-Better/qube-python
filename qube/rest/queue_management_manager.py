@@ -139,10 +139,25 @@ class QueueManagementManager:
             profile_id (int): Profile's id that is answering.
             answering_id (int): Answering's id that will be ended.
         Returns:
-            LocationAccessWithCurrentCounter: The updated LocationAccess object.
+            Answering: The ended Answering object.
         """
         response = self.client.put_request(
             f"/locations/{self.client.location_id}/queue-management/profiles/{profile_id}/answerings/{answering_id}/end/"
+        )
+        self._validate_response(response)
+
+        return Answering(**response.json())
+
+    def get_current_answering(self, profile_id: int) -> Answering:
+        """
+        Gets the current answering of given profile.
+        Args:
+            profile_id (int): Profile's id that is answering.
+        Returns:
+            Answering: The current Answering object.
+        """
+        response = self.client.get_request(
+            f"/locations/{self.client.location_id}/queue-management/profiles/{profile_id}/answerings/current/"
         )
         self._validate_response(response)
 

@@ -52,7 +52,7 @@ class Ticket:
     priority_level: int
     created_at: datetime
     state: TicketStateEnum
-    invalidated_by_system: Optional[Union[InvalidatedBySystemEnum, None]]
+    invalidated_by_system: Optional[InvalidatedBySystemEnum]
     ticket_local_runner: Optional[int]
     queue: int
     queue_dest: int
@@ -74,10 +74,10 @@ class Answering:
     id: int
     created_at: str
     updated_at: str
-    finish_reason: Optional[Union[FinishReasonEnum, None]]
+    finish_reason: Optional[FinishReasonEnum]
     started_at: str
     finished_at: str
-    invalidated_by_system: Optional[Union[InvalidatedBySystemEnum, None]]
+    invalidated_by_system: Optional[InvalidatedBySystemEnum]
     waiting_time: Optional[int]
     service_time: Optional[int]
     answering_local_runner: Optional[int]

@@ -18,6 +18,7 @@ from qube.rest.exceptions import (
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
+    TicketsLimitReachedException,
 )
 from qube.rest.graphql_generators import QueuesListGraphQLGenerator
 from qube.rest.types import (
@@ -37,7 +38,8 @@ SUB_TYPE_TO_EXCEPTION = {
     'mismatching_counters': MismatchingCountersException,
     'has_local_runner': HasLocalRunnerException,
     'inactive_queue': InactiveQueueException,
-    'invalid_schedule': InvalidScheduleException
+    'invalid_schedule': InvalidScheduleException,
+    'tickets_limit_reached': TicketsLimitReachedException,
 }
 
 STATUS_CODE_TO_EXCEPTION = {
@@ -77,7 +79,7 @@ class QueueManagementManager:
             NoCurrentCounterException: If API returns a NoCurrentCounterException exception.
             InactiveCounterException: If API returns a InactiveCounterException exception.
         """
-        if response.status_code == 400:
+        if response.status_code == 400 or 404:
             response_data = response.json()
             sub_type_exception = SUB_TYPE_TO_EXCEPTION.get(response_data.get("sub_type"))
             if sub_type_exception:

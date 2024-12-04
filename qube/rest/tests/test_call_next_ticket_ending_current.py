@@ -17,10 +17,10 @@ from qube.rest.types import Answering
 
 
 @patch.object(RestClient, "post_request")
-class TestCallNextTicket(unittest.TestCase):
+class TestCallNextTicketEndingCurrent(unittest.TestCase):
 
     def setUp(self):
-        self.base_url = "https://api-url-qube.com"
+        self.base_url = "http://api-url-qube.com"
         self.api_key = 'api_key'
         self.location_id = 1
 
@@ -146,7 +146,7 @@ class TestCallNextTicket(unittest.TestCase):
         with self.assertRaises(AlreadyAnsweringException):
             self.qube_rest_client.get_queue_management_manager().call_next_ticket_ending_current(profile_id)
 
-    def test_call_next_ticket_ending_current_for_no_current_counter_exception(self, mock_post_request):
+    def test_call_next_ticket_ending_current_for_not_current_counter_exception(self, mock_post_request):
         """Test call next ticket to raises an Exception (NoCurrentCounterException)"""
         profile_id = 1
 

@@ -96,6 +96,14 @@ class InvalidScheduleException(QueueManagementError):
         super().__init__(self.message)
 
 
+class TicketsLimitReachedException(QueueManagementError):
+    """Raised when we are generating a Ticket and Ticket limit was reached."""
+
+    def __init__(self):
+        self.message = "Tickets' limit was reached."
+        super().__init__(self.message)
+
+
 class LocalRunnerException(RestClientError):
     """Base class for Local Runner errors."""
 

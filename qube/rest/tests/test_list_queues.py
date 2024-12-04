@@ -100,7 +100,8 @@ class TestListQueues(unittest.TestCase):
             self.assertEqual(page_with_queues, expected_queues_list)
 
         mock_get_request.assert_called_once_with(list_queues_path, params={
-            'page': 1
+            'page': 1,
+            'page_size': 10
         })
 
     def test_list_queues_with_multiple_pages_with_success(self, mock_get_request):
@@ -112,7 +113,8 @@ class TestListQueues(unittest.TestCase):
             self.page_1_list_of_queues_response, self.page_2_list_of_queues_response
         ]
 
-        list_of_queues_generator = self.qube_rest_client.get_queue_management_manager().list_queues()
+        page_size = 3
+        list_of_queues_generator = self.qube_rest_client.get_queue_management_manager().list_queues(page_size)
         page = 1
 
         for page_with_queues in list_of_queues_generator:
@@ -122,10 +124,12 @@ class TestListQueues(unittest.TestCase):
 
         mock_get_request.assert_has_calls([
             call(list_queues_path, params={
-                'page': 1
+                'page': 1,
+                'page_size': page_size
             }),
             call(list_queues_path, params={
-                'page': 2
+                'page': 2,
+                'page_size': page_size
             }),
         ],
                                           any_order=True)
@@ -143,7 +147,8 @@ class TestListQueues(unittest.TestCase):
             self.assertEqual(page_with_queues, [])
 
         mock_get_request.assert_called_once_with(list_queues_path, params={
-            'page': 1
+            'page': 1,
+            'page_size': 10
         })
 
     def test_list_queues_for_bad_request(self, mock_get_request):

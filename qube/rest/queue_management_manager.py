@@ -79,7 +79,7 @@ class QueueManagementManager:
             NoCurrentCounterException: If API returns a NoCurrentCounterException exception.
             InactiveCounterException: If API returns a InactiveCounterException exception.
         """
-        if response.status_code == 400 or 404:
+        if response.status_code == 400 or response.status_code == 404:
             response_data = response.json()
             sub_type_exception = SUB_TYPE_TO_EXCEPTION.get(response_data.get("sub_type"))
             if sub_type_exception:
@@ -200,12 +200,14 @@ class QueueManagementManager:
 
         return Queue(**response.json())
 
-    def list_queues(self) -> Generator[List[Queue], None, None]:
+    def list_queues(self, page_size: int = 10) -> Generator[List[Queue], None, None]:
         """
         Lazily fetches queues from the API.
         List queues using `yield` for efficient processing of paginated API responses.
         This method retrieves and yields items one at a time, reducing memory usage and
         improving performance for large datasets.
+        Args:
+            page_size (int): Number of Queues per page.
         Returns:
             Generator[List[Queue]]: Generator that will iterate over pages of Queues.
         """
@@ -214,23 +216,26 @@ class QueueManagementManager:
         while has_next_page:
             params = {
                 "page": page,
+                "page_size": page_size
             }
             response = self.client.get_request(f"/locations/{self.client.location_id}/queues/", params=params)
             self._validate_response(response)
 
             response_data = response.json()
-            yield [Queue(**item) for item in response_data["results"]]
 
             if response_data.get("next"):
                 page += 1
             else:
                 has_next_page = False
 
-    def list_queues_of_queues_list(self, queues_list_id: int) -> List[Queue]:
+            yield [Queue(**item) for item in response_data["results"]]
+
+    def list_queues_of_queues_list(self, queues_list_id: int, page_size: int = 10) -> List[Queue]:
         """
         Gets one list of queues that are associated with given QueuesList
         Args:
             queues_list_id (int): QueuesList's id that have queues associated.
+            page_size (int): Number of Queues per page.
         Returns:
             List[Queue]: List of Queues associated with given QueuesList.
         """
@@ -240,7 +245,9 @@ class QueueManagementManager:
         while has_next_page:
             list_of_queues_objects = list()
 
-            query = QueuesListGraphQLGenerator.generate_query_body(queues_list=queues_list_id, first=10, after=after)
+            query = QueuesListGraphQLGenerator.generate_query_body(
+                queues_list=queues_list_id, first=page_size, after=after
+            )
 
             response = self.client.make_graphql_request(query)
             self._validate_response(response)

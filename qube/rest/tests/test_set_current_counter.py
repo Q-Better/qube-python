@@ -13,6 +13,7 @@ from qube.rest.exceptions import (
 from qube.rest.types import LocationAccessWithCurrentCounter
 
 
+@patch.object(RestClient, "put_request")
 class TestSetCurrentCounter(unittest.TestCase):
 
     def setUp(self):
@@ -46,7 +47,6 @@ class TestSetCurrentCounter(unittest.TestCase):
             'deleted_at': None,
         }
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_with_success(self, mock_put_request):
         """Test set current counter and checks if LocationAccess with current Counter object is returned"""
         set_current_counter_path = f"/locations/{self.location_id}/location-accesses/{self.location_access_id}/associate-counter/"
@@ -64,7 +64,6 @@ class TestSetCurrentCounter(unittest.TestCase):
             location_access_updated, LocationAccessWithCurrentCounter(**self.location_access_with_counter_data)
         )
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_for_bad_request(self, mock_put_request):
         """Test set current counter to raises an Exception (BadRequest)"""
         response = mock.Mock()
@@ -76,7 +75,6 @@ class TestSetCurrentCounter(unittest.TestCase):
                 self.location_access_id, self.counter_id
             )
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_for_not_authorized(self, mock_put_request):
         """Test set current counter to raises an Exception (NotAuthorized)"""
         response = mock.Mock()
@@ -88,7 +86,6 @@ class TestSetCurrentCounter(unittest.TestCase):
                 self.location_access_id, self.counter_id
             )
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_for_forbidden(self, mock_put_request):
         """Test set current counter to raises an Exception (Forbidden)"""
         response = mock.Mock()
@@ -100,7 +97,6 @@ class TestSetCurrentCounter(unittest.TestCase):
                 self.location_access_id, self.counter_id
             )
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_for_not_found(self, mock_put_request):
         """Test set current counter to raises an Exception (NotFound)"""
         response = mock.Mock()
@@ -112,7 +108,6 @@ class TestSetCurrentCounter(unittest.TestCase):
                 self.location_access_id, self.counter_id
             )
 
-    @patch.object(RestClient, "put_request")
     def test_set_current_counter_for_no_access_to_counter_exception(self, mock_put_request):
         """Test set current counter to raises an Exception (NoAccessToCounterException)"""
         response = mock.Mock()

@@ -18,6 +18,7 @@ from qube.rest.exceptions import (
 from qube.rest.types import Answering
 
 
+@patch.object(RestClient, "put_request")
 class TestEndAnswering(unittest.TestCase):
 
     def setUp(self):
@@ -70,7 +71,6 @@ class TestEndAnswering(unittest.TestCase):
             'local_runner': None
         }
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_with_success(self, mock_put_request):
         """Test end answering and checks if Answering object is returned"""
         profile_id = 1
@@ -84,7 +84,6 @@ class TestEndAnswering(unittest.TestCase):
 
         self.assertEqual(answering_ended, Answering(**self.answering_data))
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_bad_request(self, mock_put_request):
         """Test end answering to raises an Exception (BadRequest)"""
         profile_id = 1
@@ -97,7 +96,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(BadRequest):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_not_authorized(self, mock_put_request):
         """Test end answering to raises an Exception (NotAuthorized)"""
         profile_id = 1
@@ -110,7 +108,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(NotAuthorized):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_forbidden(self, mock_put_request):
         """Test end answering to raises an Exception (Forbidden)"""
         profile_id = 1
@@ -123,7 +120,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(Forbidden):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_not_found(self, mock_put_request):
         """Test end answering to raises an Exception (NotFound)"""
         profile_id = 1
@@ -136,7 +132,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(NotFound):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_already_processed_exception(self, mock_put_request):
         """Test end answering to raises an Exception (AnsweringAlreadyProcessedException)"""
         profile_id = 1
@@ -156,7 +151,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(AnsweringAlreadyProcessedException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_no_current_counter_exception(self, mock_put_request):
         """Test end answering to raises an Exception (AnsweringAlreadyProcessedException)"""
         profile_id = 1
@@ -176,7 +170,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(NoCurrentCounterException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_inactive_counter_exception(self, mock_put_request):
         """Test end answering to raises an Exception (AnsweringAlreadyProcessedException)"""
         profile_id = 1
@@ -196,7 +189,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(InactiveCounterException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_mismatching_counters_exception(self, mock_put_request):
         """Test end answering to raises an Exception (MismatchingCountersException)"""
         profile_id = 1
@@ -216,7 +208,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(MismatchingCountersException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_mismatching_counters_exception(self, mock_put_request):
         """Test end answering to raises an Exception (InactiveQueueException)"""
         profile_id = 1
@@ -236,7 +227,6 @@ class TestEndAnswering(unittest.TestCase):
         with self.assertRaises(InactiveQueueException):
             self.qube_rest_client.get_queue_management_manager().end_answering(profile_id, answering_id)
 
-    @patch.object(RestClient, "put_request")
     def test_end_answering_for_has_local_runner_exception(self, mock_put_request):
         """Test end answering to raises an Exception (MismatchingCountersException)"""
         profile_id = 1

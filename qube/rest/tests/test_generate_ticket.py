@@ -11,7 +11,7 @@ from qube.rest.exceptions import (
     NotFound,
     TicketsLimitReachedException,
 )
-from qube.rest.types import Ticket
+from qube.types import Ticket
 
 
 @patch.object(RestClient, "post_request")

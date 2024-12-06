@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock
-from qube.events.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
+from qube.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
 
 
 class TestQueueHandlerDecorators:

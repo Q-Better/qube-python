@@ -13,7 +13,7 @@ from qube.rest.exceptions import (
     NotAuthorized,
     NotFound,
 )
-from qube.rest.types import Answering
+from qube.types import Answering
 
 
 @patch.object(RestClient, "post_request")

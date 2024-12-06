@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, Mock
 
 from qube.events.handlers import QueuingSystemResetHandler
-from qube.events.types import QueuingSystemReset
+from qube.types import QueuingSystemReset
 
 
 # Concrete subclass for testing purposes

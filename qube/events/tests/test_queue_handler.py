@@ -2,7 +2,7 @@ import unittest
 from unittest.mock import MagicMock, ANY, Mock
 
 from qube.events.handlers import QueueHandler
-from qube.events.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
+from qube.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
 
 
 class ConcreteQueueHandler(QueueHandler):

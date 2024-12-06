@@ -10,7 +10,7 @@ from qube.rest.exceptions import (
     NotAuthorized,
     NotFound,
 )
-from qube.rest.types import Queue
+from qube.types import Queue
 
 
 @patch.object(RestClient, "put_request")

@@ -19,14 +19,11 @@ from qube.rest.exceptions import (
     NotAuthorized,
     NotFound,
     TicketsLimitReachedException,
+    PaymentRequired,
 )
 from qube.rest.graphql_generators import QueuesListGraphQLGenerator
-from qube.rest.types import (
-    Answering,
-    LocationAccessWithCurrentCounter,
-    Queue,
-    Ticket,
-)
+
+from qube.types import Ticket, Answering, LocationAccessWithCurrentCounter, Queue
 
 
 SUB_TYPE_TO_EXCEPTION = {
@@ -45,6 +42,7 @@ SUB_TYPE_TO_EXCEPTION = {
 STATUS_CODE_TO_EXCEPTION = {
     400: BadRequest,
     401: NotAuthorized,
+    402: PaymentRequired,
     403: Forbidden,
     404: NotFound,
     500: InternalServerError,
@@ -75,16 +73,26 @@ class QueueManagementManager:
             NotAuthorized: If API returns a NotAuthorized exception.
             Forbidden: If API returns a Forbidden exception.
             NotFound: If API returns a NotFound exception.
+            InternalServerError: If API returns a InternalServerError exception.
             AlreadyAnsweringException: If API returns a AlreadyAnsweringException exception.
             NoCurrentCounterException: If API returns a NoCurrentCounterException exception.
             InactiveCounterException: If API returns a InactiveCounterException exception.
+            NoAccessToCounterException: If API returns a NoAccessToCounterException exception.
+            AnsweringAlreadyProcessedException: If API returns a AnsweringAlreadyProcessedException exception.
+            MismatchingCountersException: If API returns a MismatchingCountersException exception.
+            HasLocalRunnerException: If API returns a HasLocalRunnerException exception.
+            InactiveQueueException: If API returns a InactiveQueueException exception.
+            InvalidScheduleException: If API returns a InvalidScheduleException exception.
+            TicketsLimitReachedException: If API returns a TicketsLimitReachedException exception.
         """
         if response.status_code == 400 or response.status_code == 404:
-            response_data = response.json()
-            sub_type_exception = SUB_TYPE_TO_EXCEPTION.get(response_data.get("sub_type"))
-            if sub_type_exception:
-                raise sub_type_exception
-
+            try:
+                response_data = response.json()
+                sub_type_exception = SUB_TYPE_TO_EXCEPTION.get(response_data.get("sub_type"))
+                if sub_type_exception:
+                    raise sub_type_exception
+            except ValueError:
+                pass
         exception = STATUS_CODE_TO_EXCEPTION.get(response.status_code)
         if exception:
             raise exception

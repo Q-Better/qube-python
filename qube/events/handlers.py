@@ -5,7 +5,8 @@ from typing import List, Type, Union, Optional, Callable
 
 from qube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError, \
     InvalidTicketHandlerArgumentsError
-from qube.events.types import Ticket, QueuingSystemReset, QueueWithAverageWaitingTime, QueueWithWaitingTickets, AnsweringTicket
+
+from qube.types import Ticket, AnsweringTicket, QueuingSystemReset, QueueWithAverageWaitingTime, QueueWithWaitingTickets
 
 
 class MQTTEventHandlerBase(ABC):

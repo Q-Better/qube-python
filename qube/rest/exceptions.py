@@ -28,6 +28,11 @@ class InternalServerError(RestClientError):
     pass
 
 
+class PaymentRequired(RestClientError):
+    """Raised when a client makes a request that requires payment."""
+    pass
+
+
 class QueueManagementError(RestClientError):
     """Base class for Queue Management errors."""
 

@@ -10,7 +10,7 @@ from qube.rest.exceptions import (
     NotAuthorized,
     NotFound,
 )
-from qube.rest.types import LocationAccessWithCurrentCounter
+from qube.types import LocationAccessWithCurrentCounter
 
 
 @patch.object(RestClient, "put_request")

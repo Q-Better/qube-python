@@ -3,7 +3,7 @@ import json
 from unittest.mock import Mock
 from qube.events.clients import MQTTClient
 from qube.events.exceptions import InvalidTicketHandlerArgumentsError
-from qube.events.types import AnsweringTicket, Ticket, InvalidatedBySystemEnum, StateEnum
+from qube.types import AnsweringTicket, Ticket, TicketStateEnum, InvalidatedBySystemEnum
 
 
 class TestTicketHandlerDecorator:
@@ -91,31 +91,31 @@ class TestTicketHandlerDecorator:
         def handle(msg):
             handler(msg)
 
-        payload = Ticket(
-            id=12345,
-            signature="abcde12345signature",
-            number=98765,
-            printed_tag="VIP",
-            printed_number="000123",
-            note="This is a priority ticket.",
-            priority=True,
-            priority_level=1,
-            updated_at='2024-01-01T00:00:00.000000Z',
-            created_at='2024-01-01T00:00:00.000000Z',
-            state=StateEnum.END,
-            invalidated_by_system=InvalidatedBySystemEnum.INVALIDATE_RESET,
-            ticket_local_runner=101,
-            queue=5,
-            queue_dest=7,
-            counter_dest=2,
-            profile_dest=3,
-            generated_by_ticket_kiosk=99,
-            generated_by_profile=88,
-            is_generated_by_api_key=True,
-            generated_by_api_key=123456,
-            local_runner=2001,
-            tags=["urgent", "vip", "queue5"]
-        ).__dict__
+        payload = {
+            "id": 12345,
+            "signature": "abcde12345signature",
+            "number": 98765,
+            "printed_tag": "VIP",
+            "printed_number": "000123",
+            "note": "This is a priority ticket.",
+            "priority": True,
+            "priority_level": 1,
+            "updated_at": '2024-01-01T00:00:00.000000Z',
+            "created_at": '2024-01-01T00:00:00.000000Z',
+            "state": TicketStateEnum.END,
+            "invalidated_by_system": InvalidatedBySystemEnum.INVALIDATE_RESET,
+            "ticket_local_runner": 101,
+            "queue": 5,
+            "queue_dest": 7,
+            "counter_dest": 2,
+            "profile_dest": 3,
+            "generated_by_ticket_kiosk": 99,
+            "generated_by_profile": 88,
+            "is_generated_by_api_key": True,
+            "generated_by_api_key": 123456,
+            "local_runner": 2001,
+            "tags": ["urgent", "vip", "queue5"]
+        }
 
         mqtt_client._on_message(
             mqtt_client.client, None,

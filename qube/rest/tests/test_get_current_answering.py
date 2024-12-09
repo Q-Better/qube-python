@@ -4,7 +4,7 @@ from unittest.mock import patch
 
 from qube.rest.clients import RestClient
 from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
-from qube.rest.types import Answering
+from qube.types import Answering
 
 
 @patch.object(RestClient, "get_request")

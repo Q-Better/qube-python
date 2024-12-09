@@ -1,3 +1,5 @@
+from typing import Union
+
 import requests
 from requests import Response
 
@@ -10,7 +12,7 @@ class RestClient:
     (default or not) and making some requests to API Server.
     """
 
-    API_BASE_URL = "api.qube.q-better.com"
+    API_BASE_URL = "api.qube.q-better.com/en/api/v1"
 
     def __init__(self, api_key: str, location_id: int, queue_management_manager: object = None, base_url: str = None):
         """
@@ -29,7 +31,7 @@ class RestClient:
         self.location_id = location_id
         self.queue_management_manager = queue_management_manager
 
-    def get_queue_management_manager(self) -> object:
+    def get_queue_management_manager(self) -> Union[QueueManagementManager, object]:
         """
         Returns Manager object. If client's queue management manager attribute is None, it returns default object of
         Queue Management Manager.

@@ -6,7 +6,7 @@ from unittest.mock import call, patch
 from qube.rest.clients import RestClient
 from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
 from qube.rest.graphql_generators import QueuesListGraphQLGenerator
-from qube.rest.types import Queue
+from qube.types import Queue
 
 
 @patch.object(RestClient, "make_graphql_request")

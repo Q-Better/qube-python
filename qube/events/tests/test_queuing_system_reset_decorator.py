@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock
-from qube.events.types import QueuingSystemReset
+from qube.types import QueuingSystemReset
 
 
 class TestQueuingSystemResetDecorator:

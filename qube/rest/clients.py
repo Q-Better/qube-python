@@ -1,3 +1,5 @@
+from typing import Union
+
 import requests
 from requests import Response
 
@@ -10,7 +12,7 @@ class RestClient:
     (default or not) and making some requests to API Server.
     """
 
-    API_BASE_URL = "api.qube.q-better.com"
+    API_BASE_URL = "api.qube.q-better.com/en/api/v1"
 
     def __init__(self, api_key: str, location_id: int, queue_management_manager: object = None, base_url: str = None):
         """
@@ -29,7 +31,7 @@ class RestClient:
         self.location_id = location_id
         self.queue_management_manager = queue_management_manager
 
-    def get_queue_management_manager(self) -> object:
+    def get_queue_management_manager(self) -> Union[QueueManagementManager, object]:
         """
         Returns Manager object. If client's queue management manager attribute is None, it returns default object of
         Queue Management Manager.
@@ -77,4 +79,19 @@ class RestClient:
             Response: Response returned from request.
         """
         response = requests.put(self.base_url + path, headers=self.headers, params=params, data=data, timeout=10)
+        return response
+
+    def make_graphql_request(self, data: str = None) -> Response:
+        """
+        Mas a POST request to GraphQL endpoint. This method can be useful for Managers.
+        Args:
+            data (dict): Data that will be sent in the body of the request that defines the Response returned from
+            GraphQL endpoint.
+        Returns:
+            Response: Response returned from request.
+        """
+        path = f"/graphql/"
+        response = requests.post(self.base_url + path, headers=self.headers, json={
+            "query": data
+        }, timeout=10)
         return response

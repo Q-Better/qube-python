@@ -5,11 +5,13 @@ from qube import QubeClient
 from qube.types import Ticket, AnsweringTicket, QueueWithAverageWaitingTime, QueueWithWaitingTickets, \
     QueuingSystemReset
 
-# Retrieve environment variables
-API_KEY = os.environ["QUBE_API_KEY"]
-LOCATION_ID = int(os.environ["QUBE_LOCATION_ID"])
-QUEUE_ID = int(os.environ["QUBE_QUEUE_ID"])
-COUNTER_ID = int(os.environ["QUBE_COUNTER_ID"])
+# Retrieve required environment variables for API configuration
+API_KEY = os.environ.get(
+    "QUBE_API_KEY", "your_api_key_here"
+)  # Replace with your API key if not using environment variables
+LOCATION_ID = int(
+    os.environ.get("QUBE_LOCATION_ID", 1)
+)  # Replace with your Location ID if not using environment variables
 
 
 def example():
@@ -19,20 +21,25 @@ def example():
     # Initialize the QubeClient
     qube_client = QubeClient(api_key=API_KEY, location_id=LOCATION_ID)
 
-    # Register event handlers
-    @qube_client.on_ticket_called(counter_id=COUNTER_ID)
-    def handle_ticket_from_counter(ticket: AnsweringTicket):
-        print(f"Received ticket from counter {COUNTER_ID}: {ticket}")
+    # Placeholder values for IDs. Update these with the actual IDs from your Qube account.
+    # They are associated with the specified location ID.
+    queue_id = 789  # Example queue ID
+    counter_id = 456  # Example counter ID
 
-    @qube_client.on_ticket_called(queue_id=QUEUE_ID)
+    # Register event handlers
+    @qube_client.on_ticket_called(counter_id=counter_id)
+    def handle_ticket_from_counter(ticket: AnsweringTicket):
+        print(f"Received ticket from counter {counter_id}: {ticket}")
+
+    @qube_client.on_ticket_called(queue_id=queue_id)
     def handle_ticket_from_queue(ticket: AnsweringTicket):
-        print(f"Received ticket from queue {QUEUE_ID}: {ticket}")
+        print(f"Received ticket from queue {queue_id}: {ticket}")
 
     @qube_client.on_ticket_generated()
     def handle_generated_ticket(ticket: Ticket):
         print(f"Generated ticket: {ticket}")
 
-    @qube_client.on_queues_changed_waiting_number(queue_id=QUEUE_ID)
+    @qube_client.on_queues_changed_waiting_number(queue_id=queue_id)
     def handle_queue_waiting_number_change(queue: QueueWithWaitingTickets):
         print(f"Queue waiting number changed: {queue}")
 

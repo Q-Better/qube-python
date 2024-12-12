@@ -3,7 +3,7 @@ from requests import Response
 import base64
 from typing import Generator, List, Optional
 
-from qube.rest.exceptions import (
+from pyqube.rest.exceptions import (
     AlreadyAnsweringException,
     AnsweringAlreadyProcessedException,
     BadRequest,
@@ -21,9 +21,9 @@ from qube.rest.exceptions import (
     TicketsLimitReachedException,
     PaymentRequired,
 )
-from qube.rest.graphql_generators import QueuesListGraphQLGenerator
+from pyqube.rest.graphql_generators import QueuesListGraphQLGenerator
 
-from qube.types import Ticket, Answering, LocationAccessWithCurrentCounter, Queue
+from pyqube.types import Ticket, Answering, LocationAccessWithCurrentCounter, Queue
 
 
 SUB_TYPE_TO_EXCEPTION = {

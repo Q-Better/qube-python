@@ -1,7 +1,7 @@
 import pytest
 import json
 from unittest.mock import Mock
-from qube.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
+from pyqube.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
 
 
 class TestQueueHandlerDecorators:
@@ -14,7 +14,7 @@ class TestQueueHandlerDecorators:
         """
         Fixture to create an instance of MQTTClient.
         """
-        from qube.events.clients import MQTTClient
+        from pyqube.events.clients import MQTTClient
         return MQTTClient(api_key="dummy_api_key", location_id=1)
 
     def simulate_mqtt_message(self, mqtt_client, topic, payload):

@@ -2,9 +2,9 @@ import unittest
 from unittest import mock
 from unittest.mock import patch
 
-from qube.rest.clients import RestClient
-from qube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
-from qube.types import Answering
+from pyqube.rest.clients import RestClient
+from pyqube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
+from pyqube.types import Answering
 
 
 @patch.object(RestClient, "get_request")

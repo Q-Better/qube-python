@@ -3,8 +3,8 @@ import requests
 import unittest
 from unittest.mock import Mock, patch
 
-from qube.rest.clients import RestClient
-from qube.rest.queue_management_manager import QueueManagementManager
+from pyqube.rest.clients import RestClient
+from pyqube.rest.queue_management_manager import QueueManagementManager
 
 
 class TestRestClient(unittest.TestCase):

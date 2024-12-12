@@ -2,8 +2,8 @@ import unittest
 from unittest import mock
 from unittest.mock import patch
 
-from qube.rest.clients import RestClient
-from qube.rest.exceptions import (
+from pyqube.rest.clients import RestClient
+from pyqube.rest.exceptions import (
     BadRequest,
     Forbidden,
     InvalidScheduleException,
@@ -11,7 +11,7 @@ from qube.rest.exceptions import (
     NotFound,
     TicketsLimitReachedException,
 )
-from qube.types import Ticket
+from pyqube.types import Ticket
 
 
 @patch.object(RestClient, "post_request")

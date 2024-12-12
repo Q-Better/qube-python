@@ -1,9 +1,9 @@
 import pytest
 import json
 from unittest.mock import Mock
-from qube.events.clients import MQTTClient
-from qube.events.exceptions import InvalidTicketHandlerArgumentsError
-from qube.types import AnsweringTicket, Ticket, TicketStateEnum, InvalidatedBySystemEnum
+from pyqube.events.clients import MQTTClient
+from pyqube.events.exceptions import InvalidTicketHandlerArgumentsError
+from pyqube.types import AnsweringTicket, Ticket, TicketStateEnum, InvalidatedBySystemEnum
 
 
 class TestTicketHandlerDecorator:

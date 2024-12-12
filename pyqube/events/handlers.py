@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 from functools import wraps
 from typing import List, Type, Union, Optional, Callable
 
-from qube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError, \
+from pyqube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError, \
     InvalidTicketHandlerArgumentsError
 
-from qube.types import Ticket, AnsweringTicket, QueuingSystemReset, QueueWithAverageWaitingTime, QueueWithWaitingTickets
+from pyqube.types import Ticket, AnsweringTicket, QueuingSystemReset, QueueWithAverageWaitingTime, QueueWithWaitingTickets
 
 
 class MQTTEventHandlerBase(ABC):

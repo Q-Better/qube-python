@@ -3,7 +3,7 @@ from typing import Union
 import requests
 from requests import Response
 
-from qube.rest.queue_management_manager import QueueManagementManager
+from pyqube.rest.queue_management_manager import QueueManagementManager
 
 
 class RestClient:

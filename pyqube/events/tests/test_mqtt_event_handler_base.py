@@ -1,8 +1,8 @@
 import unittest
 from unittest.mock import MagicMock
 
-from qube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError
-from qube.events.handlers import MQTTEventHandlerBase
+from pyqube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError
+from pyqube.events.handlers import MQTTEventHandlerBase
 
 
 class MockPayload:

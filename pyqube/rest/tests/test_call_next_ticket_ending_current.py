@@ -2,8 +2,8 @@ import unittest
 from unittest import mock
 from unittest.mock import patch
 
-from qube.rest.clients import RestClient
-from qube.rest.exceptions import (
+from pyqube.rest.clients import RestClient
+from pyqube.rest.exceptions import (
     AlreadyAnsweringException,
     BadRequest,
     Forbidden,
@@ -13,7 +13,7 @@ from qube.rest.exceptions import (
     NotAuthorized,
     NotFound,
 )
-from qube.types import Answering
+from pyqube.types import Answering
 
 
 @patch.object(RestClient, "post_request")

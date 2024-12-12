@@ -1,5 +1,5 @@
-from qube.events.clients import MQTTClient
-from qube.rest.clients import RestClient
+from pyqube.events.clients import MQTTClient
+from pyqube.rest.clients import RestClient
 
 
 class QubeClient(MQTTClient, RestClient):

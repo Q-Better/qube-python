@@ -1,13 +1,13 @@
 # qube-python
 
-Qube SDK is a Python library designed for seamless interaction with the Qube REST API and MQTT services. This SDK simplifies ticket and queue management while providing an easy-to-use interface for developers.
+Qube SDK is a Python library designed for seamless interaction with the Qube REST API and subscribing to real-time events. This SDK simplifies ticket and queue management while providing an easy-to-use interface for developers.
 
 ## Installation
 
 You can install the SDK using [Poetry](https://python-poetry.org/):
 
 ```bash
-poetry add qube-python
+poetry add pyqube
 ```
 
 ## Example Usage
@@ -18,8 +18,8 @@ Here’s a brief example demonstrating how you can use the Qube SDK to interact 
 
 ```python
 import time
-from qube import QubeClient
-from qube.types import Ticket
+from pyqube import QubeClient
+from pyqube.types import Ticket
 
 
 def main():
@@ -44,7 +44,7 @@ if __name__ == "__main__":
 ### REST API
 
 ```python
-from qube import QubeClient
+from pyqube import QubeClient
 
 
 def generate_ticket_for_each_queue(qube_client):

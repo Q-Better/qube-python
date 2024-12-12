@@ -2,8 +2,8 @@ import unittest
 from datetime import UTC, datetime, timedelta
 from unittest.mock import MagicMock, Mock, patch
 
-from qube.events.clients import MQTTClient
-from qube.events.exceptions import SubscriptionError
+from pyqube.events.clients import MQTTClient
+from pyqube.events.exceptions import SubscriptionError
 
 
 class TestMQTTClient(unittest.TestCase):

@@ -1,8 +1,8 @@
 from unittest.mock import Mock
 import pytest
 
-from qube.events.exceptions import InvalidTicketHandlerArgumentsError
-from qube.events.handlers import TicketHandler
+from pyqube.events.exceptions import InvalidTicketHandlerArgumentsError
+from pyqube.events.handlers import TicketHandler
 
 
 # Concrete subclass for testing purposes

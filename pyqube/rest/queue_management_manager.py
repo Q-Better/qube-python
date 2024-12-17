@@ -18,12 +18,16 @@ from pyqube.rest.exceptions import (
     NoCurrentCounterException,
     NotAuthorized,
     NotFound,
-    TicketsLimitReachedException,
     PaymentRequired,
+    TicketsLimitReachedException,
 )
 from pyqube.rest.graphql_generators import QueuesListGraphQLGenerator
-
-from pyqube.types import Ticket, Answering, LocationAccessWithCurrentCounter, Queue
+from pyqube.types import (
+    Answering,
+    LocationAccessWithCurrentCounter,
+    Queue,
+    Ticket,
+)
 
 
 SUB_TYPE_TO_EXCEPTION = {
@@ -101,8 +105,8 @@ class QueueManagementManager:
         """
         Generate a ticket for a given queue with priority or not.
         Args:
-            queue (int): Path of URL to be added to base url to make the request.
-            priority (bool): Query parameters that will be included in the URL.
+            queue (int): Queue's id that will be generated the ticket.
+            priority (bool): Boolean that defines if Ticket is priority or not.
         Returns:
             Ticket: The generated Ticket object.
         """

@@ -1,6 +1,7 @@
-import pytest
 import json
+import pytest
 from unittest.mock import Mock
+
 from pyqube.types import QueuingSystemReset
 
 

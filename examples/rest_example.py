@@ -1,5 +1,7 @@
 import os
+
 from pyqube import QubeClient
+
 
 # Retrieve required environment variables for API configuration
 API_KEY = os.environ.get(

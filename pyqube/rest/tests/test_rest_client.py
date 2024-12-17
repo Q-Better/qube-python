@@ -25,7 +25,7 @@ class TestRestClient(unittest.TestCase):
     def test_initialization_with_default_base_url(self):
         """Test that the client initializes with base url without this argument"""
         qube_rest_client = RestClient(self.api_key, self.location_id)
-        self.assertEqual(qube_rest_client.base_url, "api.qube.q-better.com/en/api/v1")
+        self.assertEqual(qube_rest_client.base_url, "https://api.qube.q-better.com/en/api/v1")
 
     def test_get_queue_management_manager_with_default_manager(self):
         """Test that the client gets the default queue management manager"""

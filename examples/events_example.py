@@ -2,8 +2,14 @@ import os
 import time
 
 from pyqube import QubeClient
-from pyqube.types import Ticket, AnsweringTicket, QueueWithAverageWaitingTime, QueueWithWaitingTickets, \
-    QueuingSystemReset
+from pyqube.types import (
+    AnsweringTicket,
+    QueueWithAverageWaitingTime,
+    QueueWithWaitingTickets,
+    QueuingSystemReset,
+    Ticket,
+)
+
 
 # Retrieve required environment variables for API configuration
 API_KEY = os.environ.get(

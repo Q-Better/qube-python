@@ -1,5 +1,5 @@
-from unittest.mock import Mock
 import pytest
+from unittest.mock import Mock
 
 from pyqube.events.exceptions import InvalidTicketHandlerArgumentsError
 from pyqube.events.handlers import TicketHandler

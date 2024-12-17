@@ -1,8 +1,12 @@
 import unittest
-from unittest.mock import MagicMock, ANY, Mock
+from unittest.mock import ANY, MagicMock, Mock
 
 from pyqube.events.handlers import QueueHandler
-from pyqube.types import QueueWithAverageWaitingTime, QueueWithWaitingTickets, QueueGeneralDetails
+from pyqube.types import (
+    QueueGeneralDetails,
+    QueueWithAverageWaitingTime,
+    QueueWithWaitingTickets,
+)
 
 
 class ConcreteQueueHandler(QueueHandler):

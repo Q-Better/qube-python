@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyqube"
-version = "0.1.0"
+version = "0.1.1"
 description = "A Python SDK for interacting with the qube REST API and subscribing to real-time events"
 authors = ["q-better <dev@q-better.com>"]
 license = "MIT"

@@ -37,6 +37,7 @@ class TestGenerateTicket(unittest.TestCase):
             "state": 1,
             "generated_by_ticket_kiosk": None,
             "generated_by_profile": None,
+            "generated_by_totem": None,
             "generated_by_api_key": 1,
             "priority": False,
             "priority_level": 3,

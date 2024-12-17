@@ -1,12 +1,21 @@
 import json
 from abc import ABC, abstractmethod
 from functools import wraps
-from typing import List, Type, Union, Optional, Callable
+from typing import Callable, List, Optional, Type, Union
 
-from pyqube.events.exceptions import HandlerRegistrationError, PayloadFormatError, PayloadTypeError, \
-    InvalidTicketHandlerArgumentsError
-
-from pyqube.types import Ticket, AnsweringTicket, QueuingSystemReset, QueueWithAverageWaitingTime, QueueWithWaitingTickets
+from pyqube.events.exceptions import (
+    HandlerRegistrationError,
+    InvalidTicketHandlerArgumentsError,
+    PayloadFormatError,
+    PayloadTypeError,
+)
+from pyqube.types import (
+    AnsweringTicket,
+    QueueWithAverageWaitingTime,
+    QueueWithWaitingTickets,
+    QueuingSystemReset,
+    Ticket,
+)
 
 
 class MQTTEventHandlerBase(ABC):

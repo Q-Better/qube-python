@@ -4,7 +4,12 @@ from unittest import mock
 from unittest.mock import call, patch
 
 from pyqube.rest.clients import RestClient
-from pyqube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
+from pyqube.rest.exceptions import (
+    BadRequest,
+    Forbidden,
+    NotAuthorized,
+    NotFound,
+)
 from pyqube.rest.graphql_generators import QueuesListGraphQLGenerator
 from pyqube.types import Queue
 

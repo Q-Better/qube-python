@@ -1,6 +1,6 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Optional, List
+from typing import List, Optional
 
 
 def convert_str_to_datetime(dt_str: str) -> datetime:
@@ -80,6 +80,7 @@ class Ticket:
     profile_dest: Optional[int]
     generated_by_ticket_kiosk: Optional[int]
     generated_by_profile: Optional[int]
+    generated_by_totem: Optional[int]
     is_generated_by_api_key: Optional[bool]
     generated_by_api_key: Optional[int]
     local_runner: Optional[int]

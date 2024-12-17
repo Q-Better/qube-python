@@ -1,7 +1,7 @@
-from typing import Union
-
 import requests
 from requests import Response
+
+from typing import Union
 
 from pyqube.rest.queue_management_manager import QueueManagementManager
 
@@ -12,7 +12,7 @@ class RestClient:
     (default or not) and making some requests to API Server.
     """
 
-    API_BASE_URL = "api.qube.q-better.com/en/api/v1"
+    API_BASE_URL = "https://api.qube.q-better.com/en/api/v1"
 
     def __init__(self, api_key: str, location_id: int, queue_management_manager: object = None, base_url: str = None):
         """

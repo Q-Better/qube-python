@@ -1,9 +1,15 @@
-import pytest
 import json
+import pytest
 from unittest.mock import Mock
+
 from pyqube.events.clients import MQTTClient
 from pyqube.events.exceptions import InvalidTicketHandlerArgumentsError
-from pyqube.types import AnsweringTicket, Ticket, TicketStateEnum, InvalidatedBySystemEnum
+from pyqube.types import (
+    AnsweringTicket,
+    InvalidatedBySystemEnum,
+    Ticket,
+    TicketStateEnum,
+)
 
 
 class TestTicketHandlerDecorator:
@@ -111,6 +117,7 @@ class TestTicketHandlerDecorator:
             "profile_dest": 3,
             "generated_by_ticket_kiosk": 99,
             "generated_by_profile": 88,
+            "generated_by_totem": 77,
             "is_generated_by_api_key": True,
             "generated_by_api_key": 123456,
             "local_runner": 2001,

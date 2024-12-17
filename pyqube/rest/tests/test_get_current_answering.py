@@ -3,7 +3,12 @@ from unittest import mock
 from unittest.mock import patch
 
 from pyqube.rest.clients import RestClient
-from pyqube.rest.exceptions import BadRequest, Forbidden, NotAuthorized, NotFound
+from pyqube.rest.exceptions import (
+    BadRequest,
+    Forbidden,
+    NotAuthorized,
+    NotFound,
+)
 from pyqube.types import Answering
 
 

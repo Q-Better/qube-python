@@ -3,7 +3,11 @@ from datetime import UTC, datetime
 from typing import Callable, Dict, Optional
 
 from pyqube.events.exceptions import MessageHandlingError, SubscriptionError
-from pyqube.events.handlers import QueueHandler, QueuingSystemResetHandler, TicketHandler
+from pyqube.events.handlers import (
+    QueueHandler,
+    QueuingSystemResetHandler,
+    TicketHandler,
+)
 
 
 class MQTTClient(TicketHandler, QueuingSystemResetHandler, QueueHandler):

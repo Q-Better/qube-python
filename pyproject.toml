@@ -1,13 +1,13 @@
 [tool.poetry]
 name = "pyqube"
-version = "0.1.1"
+version = "0.1.2"
 description = "A Python SDK for interacting with the qube REST API and subscribing to real-time events"
 authors = ["q-better <dev@q-better.com>"]
 license = "MIT"
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.12"
+python = "^3.11"
 paho-mqtt = "^2.1.0"
 requests = "^2.32.3"
 
